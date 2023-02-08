@@ -171,7 +171,7 @@
     let returnArray = []
 
     // call each with a function
-    _.each(collection, function(item){
+    _.each(collection, function(item) {
       // (we are in the function definition here)
       // push the result of iterator(this object in the collection) into storage array
       returnArray.push(iterator(item));
@@ -258,12 +258,52 @@
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
     // TIP: Try re-using reduce() here.
+    // I: collection, iterator (logical test => true/false)
+    // O: boolean (or truthy/falsy expression)
+    // C: try to use reduce!
+    // E: TBD
+
+    //if we have an iterator, use it. Otherwise, use identity
+    iterator = iterator ? iterator : _.identity;
+
+    // return a reduce function, passing in collection &
+    // a function we'll define
+    return _.reduce(collection, function(noFalseYet, item) {
+      // (in function definition)
+      // if no element has been false yet and current iterated item is true
+      if (noFalseYet && iterator(item)) {
+        // return true
+        return true;
+      } else {
+        // return false
+        return false;
+      }
+    }, true);
+
   };
 
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
   _.some = function(collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
+
+    // I: collection, boolean logic function
+    // O: typeof MUST be boolean
+    // C: try to use every()
+    // E: empty collection, no iterator (provide default -
+    //    or every might do it for us)
+
+    // overall logic: if not all birds are not blue, then some are blue.
+
+    // if iterator is undefined, use identity
+    iterator = iterator ? iterator : _.identity;
+
+    // return an every function, passing in our collection and a function that takes in each element
+    return !_.every(collection, function(item) {
+      // (in function def)
+      // return 'not' iterator on item
+      return !iterator(item);
+    });
   };
 
 
@@ -286,11 +326,44 @@
   //     bla: "even more stuff"
   //   }); // obj1 now contains key1, key2, key3 and bla
   _.extend = function(obj) {
+    // I: 1 object, and arguments.length - 1 number of objects to be appended
+    // O: first object appended with key-value pairs of all other objects
+    // C: TBD
+    // E: 0 or 1 objects as arguments
+
+    // iterate through the arguments 'array' starting from index 1
+    for (var i = 1; i < arguments.length; i++) {
+      // iterate through keys of object
+      for (var key in arguments[i]) {
+        // put the current key-value pair in obj
+        obj[key] = arguments[i][key];
+      }
+    }
+    // return first argument
+    return obj;
+
   };
 
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
   _.defaults = function(obj) {
+    // I: 1 object, and arguments.length - 1 number of objects to be appended
+    // O: first object appended with key-value pairs of all other objects
+    // C: TBD
+    // E: 0 or 1 objects as arguments
+
+    // iterate through the arguments 'array' starting from index 1
+    for (var i = 1; i < arguments.length; i++) {
+      // iterate through keys of object
+      for (var key in arguments[i]) {
+        // put the current key-value pair in obj
+        if (obj[key] === undefined) {
+          obj[key] = arguments[i][key];
+        }
+      }
+    }
+    // return first argument
+    return obj;
   };
 
 
@@ -334,6 +407,21 @@
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
+    // I: function
+    // O: version of the function that will only run once for a given set of inputs
+    // C: none
+    // E: don't have to worry about non-primitive arguments
+
+    // create a storage array to keep track of arguments done before
+    // create a storage array to keep track of outputs done before
+    // ^indices are the same
+
+    // return a function
+      // (inside function def)
+      //
+
+
+
   };
 
   // Delays a function for the given number of milliseconds, and then calls
